@@ -67,7 +67,7 @@ window.onload = function() {
 
 
     }
-    //创建方法蛇的
+    //创建蛇的方法
     function Snack(map) {
         //设置蛇的高宽
         this.height = map.atom;
