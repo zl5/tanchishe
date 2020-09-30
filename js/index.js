@@ -75,6 +75,7 @@ window.onload = function() {
         this.height = map.atom;
         //设置蛇的一个默认方向
         this.direction = 'right';
+        //创建一条蛇
         this.body = [
             { x: 2, y: 0 }, //蛇头，第一节
             { x: 1, y: 0 }, //蛇脖子，第二节
@@ -138,6 +139,29 @@ window.onload = function() {
                 //重新生成一个食物
                 food = new Food(map);
             }
+            //判断蛇是否出界
+            if (this.body[0].x < 0 || this.body[0].x > map.xnum - 1 || this.body[0].y < 0 || this.body[0].y > map.ynum - 1) {
+                clearInterval(timer);
+                alert('游戏结束！');
+
+                //重新开始游戏
+                restart(map, this);
+                return false;
+
+            }
+
+            //判断是否是吃掉自己
+            for (var i = 4; i < this.body.length; i++) {
+                if (this.body[0].x == this.body[i].x && this.body[0].y == this.body[i].y) {
+                    clearInterval(timer);
+                    alert('游戏结束！');
+
+                    //重新开始游戏
+                    restart(map, this);
+                    return false;
+                }
+
+            }
 
             // this.body[0].y += 1;
             for (var i = 0; i < this.body.length; i++) {
@@ -151,7 +175,26 @@ window.onload = function() {
         }
 
     }
+    //定义一个重新开始游戏的方法
+    function restart(map, snack) {
+        for (var i = 0; i < snack.body.length; i++) {
+            //把这个蛇清除掉
+            map.canvas.removeChild(snack.body[i].flag);
 
+        }
+        //重新再创建一条蛇
+        snack.body = [
+            { x: 2, y: 0 }, //蛇头，第一节
+            { x: 1, y: 0 }, //蛇脖子，第二节
+            { x: 0, y: 0 } //蛇尾，第三节
+        ];
+        snack.direction = 'right';
+        snack.display();
+        //移除食物
+        map.canvas.removeChild(food.flag);
+        food = new Food(map);
+
+    }
 
     var map = new map(20, 30, 30);
     map.create();
