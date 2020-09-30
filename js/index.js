@@ -108,7 +108,46 @@ window.onload = function() {
             }
             //让蛇动起来
         this.run = function() {
+            for (var i = this.body.length - 1; i > 0; i--) {
+                this.body[i].x = this.body[i - 1].x;
+                this.body[i].y = this.body[i - 1].y;
 
+            }
+            //根据方向处理蛇头    默认为  right
+            switch (this.direction) {
+                case 'left':
+                    this.body[0].x -= 1;
+                    break;
+                case 'right':
+                    this.body[0].x += 1;
+                    break;
+                case 'up':
+                    this.body[0].y -= 1;
+                    break;
+                case 'down':
+                    this.body[0].y += 1;
+                    break;
+
+            }
+
+            //蛇吃掉食物   让蛇和食物重合时
+            if (this.body[0].x == food.x && this.body[0].y == food.y) {
+                this.body.push({ x: null, y: null, flag: null });
+                //把食物移除掉
+                map.canvas.removeChild(food.flag);
+                //重新生成一个食物
+                food = new Food(map);
+            }
+
+            // this.body[0].y += 1;
+            for (var i = 0; i < this.body.length; i++) {
+                if (this.body[i].flag != null) {
+                    map.canvas.removeChild(this.body[i].flag);
+
+                }
+
+            }
+            this.display();
         }
 
     }
@@ -118,8 +157,45 @@ window.onload = function() {
     map.create();
     var food = new Food(map);
 
-    var snake = new Snack(map);
-    snake.display();
+    var snack = new Snack(map);
+    snack.display();
+
+
+    //给蛇加上键盘事件 
+    window.onkeydown = function(e) {
+        var event = e || window.event;
+
+        console.log(event.keyCode); //打印键盘事件  上：38  下：40 左：37 右：39
+        switch (event.keyCode) {
+            case 38:
+                if (snack.direction != 'down') {
+                    snack.direction = 'up';
+                }
+
+                break;
+            case 40:
+                if (snack.direction != 'up') {
+                    snack.direction = 'down';
+                }
+
+                break;
+            case 37:
+                if (snack.direction != 'right') {
+                    snack.direction = 'left';
+                }
+
+                break;
+            case 39:
+                if (snack.direction != 'left') {
+                    snack.direction = 'right';
+                }
+
+                break;
+
+
+        }
+    }
+
 
 
     var timer;
@@ -129,7 +205,7 @@ window.onload = function() {
         clearInterval(timer)
         timer = setInterval(function() {
             console.log('sss');
-            this.run();
+            snack.run();
         }, 300)
     })
     pause.addEventListener('click', function() {
