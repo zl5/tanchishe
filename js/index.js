@@ -82,29 +82,33 @@ window.onload = function() {
         ];
         //显示蛇
         this.display = function() {
-            for (var i = 0; i < this.body.length; i++) {
-                if (this.body[i].x != null) { //当吃到食物时，x==null,不能创建  不然会在0,0处新建一个
-                    var she = document.createElement('div');
-                    this.body[i].flag = she;
+                for (var i = 0; i < this.body.length; i++) {
+                    if (this.body[i].x != null) { //当吃到食物时，x==null,不能创建  不然会在0,0处新建一个
+                        var she = document.createElement('div');
+                        this.body[i].flag = she;
 
-                    //设置蛇的样式
-                    she.style.width = this.width + 'px';
-                    she.style.height = this.height + 'px';
+                        //设置蛇的样式
+                        she.style.width = this.width + 'px';
+                        she.style.height = this.height + 'px';
 
-                    she.style.backgroundColor = "rgb(" + Math.floor(Math.random() * 20) + "," + Math.floor(Math.random() * 288) + "," + Math.floor(Math.random() * 288) + ")";
+                        she.style.backgroundColor = "rgb(" + Math.floor(Math.random() * 20) + "," + Math.floor(Math.random() * 288) + "," + Math.floor(Math.random() * 288) + ")";
 
 
-                    //设置蛇的位置
-                    she.style.position = 'absolute';
-                    she.style.left = this.body[i].x * this.width + 'px';
-                    she.style.top = this.body[i].y * this.height + 'px';
-                    //把蛇追加到地图中
-                    map.canvas.appendChild(she);
+                        //设置蛇的位置
+                        she.style.position = 'absolute';
+                        she.style.left = this.body[i].x * this.width + 'px';
+                        she.style.top = this.body[i].y * this.height + 'px';
+                        //把蛇追加到地图中
+                        map.canvas.appendChild(she);
+
+                    }
+
 
                 }
-
-
             }
+            //让蛇动起来
+        this.run = function() {
+
         }
 
     }
@@ -125,6 +129,7 @@ window.onload = function() {
         clearInterval(timer)
         timer = setInterval(function() {
             console.log('sss');
+            this.run();
         }, 300)
     })
     pause.addEventListener('click', function() {
